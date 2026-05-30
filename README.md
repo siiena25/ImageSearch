@@ -9,7 +9,7 @@ This project dissects where semantic embeddings stop being enough for e-commerce
 
 ## Demo
 
-https://github.com/user-attachments/assets/demo.mp4
+[demo.mp4](https://github.com/user-attachments/assets/e36a9d00-e94a-4501-850f-0b771857d0ae)
 
 > *(If the video doesn't auto-play above, see [demo.mp4](demo.mp4) in the repo root.)*
 
