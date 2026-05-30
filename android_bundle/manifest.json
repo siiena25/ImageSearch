@@ -1,0 +1,15 @@
+{
+  "version": 2,
+  "n_items": 658,
+  "embedding_dim": 768,
+  "texture_dim": 384,
+  "color_signature_dim": 26,
+  "router_categories": [
+    "dresses",
+    "tshirts",
+    "jeans",
+    "watches"
+  ],
+  "router_method": "visual_prototypes",
+  "thumb_size": 256
+}

@@ -1,0 +1,12 @@
+{
+  "categories": [
+    "dresses",
+    "tshirts",
+    "jeans",
+    "watches"
+  ],
+  "dim": 768,
+  "encoder": "fashion_siglip",
+  "computed_on": "cropped_catalog_images",
+  "mean_margin": 0.169
+}

@@ -1,0 +1,124 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Virtual environment
+.venv/
+venv/
+env/
+
+# Large data / model files
+# ONNX models (regenerated via export_models.py)
+models/*.onnx
+models/*.onnx.data
+
+# NumPy embeddings & features (regenerated via build_embeddings_multicat.py etc.)
+data/*.npy
+data/*.json
+data/*.jsonl
+
+# Raw / processed images (large, reproducible from source)
+data/images/
+data/images_sam2/
+data/images_sam2_multicat/
+data/images_multicat_hires/
+data/images_multicat_raw/
+
+# Demo query images are small — keep them in git (multicat_demo_*.jpg)
+# Exclude intermediate debug outputs and demo result JSONs
+data/retrieval_preview*.jpg
+data/retrieval_results*.json
+data/_bench_*
+data/multicat_demo_*.json
+
+# Intermediate test screenshots (keep only final test5)
+screens/test1/
+screens/test2/
+screens/test3/
+screens/test4/
+
+# Android bundle (regenerated via export_catalog_for_android.py)
+android_bundle/embeddings.bin
+android_bundle/texture.bin
+android_bundle/color_signatures.bin
+android_bundle/category_text_embeddings.bin
+android_bundle/category_visual_prototypes.bin
+android_bundle/catalog.json
+android_bundle/manifest.json
+android_bundle/category_text_embeddings.json
+android_bundle/category_visual_prototypes.json
+android_bundle/thumbnails/
+
+# Large source CSV (54 MB)
+products_asos.csv
+
+# Jupyter / IPython
+.ipynb_checkpoints/
+*.ipynb
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# JetBrains IDEs
+.idea/
+*.iml
+
+# Secrets / credentials
+.env
+.env.*
+secrets.json
+*.key
+
+# Misc
+*.log
+*.tmp
+*.bak
+
+# ── Old intermediate data (cleaned up, should never reappear) ─────────────────
+data/images_cropped/
+data/embeddings.npy
+data/embeddings_fashion.npy
+data/embeddings_siglip2*.npy
+data/catalog.jsonl
+data/catalog_cropped.jsonl
+data/product_ids.json
+data/product_ids_fashion.json
+data/product_ids_siglip2*.json
+data/color_diagnosis.jpg
+data/sam2_test_result.jpg
+data/grounded_sam_test*.jpg
+data/qa_segmentation*.jpg
+data/multicat_4931.*
+data/multicat_tshirt.*
+
+# ── Old root-level scripts (superseded by scripts/) ───────────────────────────
+retrieve_topk.py
+retrieve_topk_v2.py
+retrieve_topk_siglip2.py
+retrieve_topk_siglip2_hsv.py
+build_catalog_from_hf.py
+build_embeddings.py
+build_embeddings_fashion.py
+build_embeddings_siglip2.py
+segment_catalog_sam2.py
+crop_white_background.py
+diagnose_color.py
+main.py
+make_pptx.py
+_check_state.py
+_qa_segmentation.py
+_test_sam2.py
+img.png
+test.jpg
+
+DEVLOG.md
