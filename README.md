@@ -3,7 +3,7 @@
 > **Master's project @ USI, 2026** · [🌐 Project Website](https://siiena25.github.io/ImageSearch/) · [📄 Poster](poster.pdf)
 
 Foundation models like CLIP and SigLIP 2 match a photo of a dress to the word "dress" almost perfectly — but ask them to distinguish a **floral print from a polka-dot one** of the same shape, and they quietly fail.  
-This project dissects where semantic embeddings stop being enough for e-commerce visual search and rebuilds the pipeline around that gap. A lightweight **category router** dispatches queries to domain-specific experts, and the whole stack is compressed into an **on-device Android demo** — raising a second question the paper versions of Google Lens rarely address: *how much of a foundation-model retrieval system survives when it has to run on a phone?*
+This project dissects where semantic embeddings stop being enough for e-commerce visual search and rebuilds the pipeline around that gap. A lightweight **category router** dispatches queries to domain-specific experts, and the whole stack is compressed into an **on-device Android demo**.
 
 ---
 
