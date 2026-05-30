@@ -191,9 +191,3 @@ For a real marketplace (millions of items, all categories):
 - Use a **vector database** (Faiss, Qdrant, Weaviate) for sub-millisecond ANN search
 - Add HNSW / IVF indexing
 - Expand category taxonomy; fine-tune embeddings per vertical if needed
-
----
-
-## License
-
-Academic project — USI Master's in Artificial Intelligence, Computer Vision 2026.
