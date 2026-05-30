@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Visual Product Search — On-Device Image Search for Marketplaces</title>
+  <style>
+    :root {
+      --accent: #4f46e5;
+      --accent2: #7c3aed;
+      --bg: #0f0f13;
+      --surface: #18181f;
+      --border: #2a2a35;
+      --text: #e2e2ee;
+      --muted: #9898b0;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+    }
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── Hero ── */
+    header {
+      background: linear-gradient(135deg, #1a1040 0%, #0f0f13 60%);
+      border-bottom: 1px solid var(--border);
+      padding: 72px 24px 56px;
+      text-align: center;
+    }
+    .tag {
+      display: inline-block;
+      background: #2d1f6e;
+      color: #a78bfa;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border-radius: 20px;
+      padding: 4px 14px;
+      margin-bottom: 20px;
+    }
+    header h1 {
+      font-size: clamp(1.6rem, 4vw, 2.6rem);
+      font-weight: 800;
+      max-width: 780px;
+      margin: 0 auto 16px;
+      line-height: 1.25;
+    }
+    header h1 em { color: #a78bfa; font-style: normal; }
+    header p.subtitle {
+      max-width: 680px;
+      margin: 0 auto 32px;
+      color: var(--muted);
+      font-size: 1.05rem;
+    }
+    .cta-group { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 22px; border-radius: 8px;
+      font-weight: 600; font-size: 0.95rem; transition: opacity .2s;
+    }
+    .btn:hover { opacity: .85; text-decoration: none; }
+    .btn-primary { background: var(--accent); color: #fff; }
+    .btn-outline { border: 1px solid var(--border); color: var(--text); background: transparent; }
+
+    /* ── Layout ── */
+    main { max-width: 960px; margin: 0 auto; padding: 60px 24px; }
+    section { margin-bottom: 72px; }
+    h2 {
+      font-size: 1.5rem; font-weight: 700;
+      border-left: 4px solid var(--accent);
+      padding-left: 14px; margin-bottom: 28px;
+    }
+    h3 { font-size: 1.05rem; font-weight: 600; margin-bottom: 10px; color: #c4b5fd; }
+
+    /* ── Abstract ── */
+    .abstract {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--accent2);
+      border-radius: 10px;
+      padding: 24px 28px;
+      font-size: 1rem;
+      color: #ccc;
+    }
+
+    /* ── Demo video ── */
+    .video-wrap {
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: #000;
+    }
+    .video-wrap video { width: 100%; display: block; }
+
+    /* ── Screenshots grid ── */
+    .screens {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 10px;
+    }
+    .screens img {
+      width: 100%; border-radius: 10px;
+      border: 1px solid var(--border);
+      object-fit: cover; aspect-ratio: 9/19.5;
+    }
+
+    /* ── Pipeline ── */
+    .pipeline {
+      display: flex; flex-direction: column; gap: 0;
+      max-width: 640px;
+    }
+    .step {
+      display: flex; gap: 16px; align-items: flex-start;
+      padding: 18px 20px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      margin-bottom: 4px;
+      position: relative;
+    }
+    .step-num {
+      width: 32px; height: 32px; flex-shrink: 0;
+      background: var(--accent); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 0.85rem;
+    }
+    .step-body strong { display: block; margin-bottom: 4px; }
+    .step-body span { color: var(--muted); font-size: 0.9rem; }
+    .arrow { text-align: left; padding-left: 36px; color: var(--muted); font-size: 1.2rem; line-height: 1; }
+
+    /* ── Models table ── */
+    table { width: 100%; border-collapse: collapse; font-size: 0.92rem; }
+    thead th {
+      background: var(--surface); border-bottom: 1px solid var(--border);
+      padding: 10px 14px; text-align: left; font-weight: 600; color: #a78bfa;
+    }
+    tbody td { padding: 10px 14px; border-bottom: 1px solid var(--border); }
+    tbody tr:last-child td { border-bottom: none; }
+
+    /* ── Results cards ── */
+    .results-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 14px;
+    }
+    .result-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+      text-align: center;
+    }
+    .result-card .val {
+      font-size: 2rem; font-weight: 800;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .result-card .label { color: var(--muted); font-size: 0.82rem; margin-top: 4px; }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid var(--border);
+      text-align: center;
+      padding: 32px 24px;
+      color: var(--muted);
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════ HERO ══════════════════════ -->
+<header>
+  <div class="tag">USI · Computer Vision 2026 · Master's Project</div>
+  <h1>Visual Product Search<br><em>On-Device Image Search for Marketplaces</em></h1>
+  <p class="subtitle">
+    Foundation models fail to distinguish a floral print from a polka-dot one.
+    This project rebuilds the retrieval pipeline around that gap — and compresses the
+    whole stack into an on-device Android demo.
+  </p>
+  <div class="cta-group">
+    <a class="btn btn-primary" href="https://github.com/ikostiunina/ImageSearch">
+      ⬡ GitHub Repository
+    </a>
+    <a class="btn btn-outline" href="../poster.pdf">
+      📄 Poster (PDF)
+    </a>
+    <a class="btn btn-outline" href="#demo">
+      ▶ Watch Demo
+    </a>
+  </div>
+</header>
+
+<!-- ══════════════════════ MAIN ══════════════════════ -->
+<main>
+
+  <!-- Abstract -->
+  <section>
+    <h2>Abstract</h2>
+    <p class="abstract">
+      Marketplace shoppers often know what they want visually but struggle to describe it in text.
+      This project builds an end-to-end <strong>image search pipeline</strong> that accepts a product photo,
+      removes the background and any human model using <strong>U2Net-P</strong>,
+      routes the query to the right domain expert (<strong>FashionSigLIP</strong> for clothing,
+      <strong>SigLIP&nbsp;2</strong> otherwise) via a zero-shot category router,
+      retrieves top-50 candidates with cosine similarity, and reranks them using
+      <strong>DINOv2 texture features</strong> and an <strong>HSV colour signature</strong>.
+      The complete pipeline runs fully <strong>on-device</strong> on Android — a blueprint for
+      scaling to a real marketplace backend.
+    </p>
+  </section>
+
+  <!-- Demo -->
+  <section id="demo">
+    <h2>Demo</h2>
+    <div class="video-wrap">
+      <video controls poster="">
+        <source src="../demo.mp4" type="video/mp4" />
+        Your browser doesn't support HTML5 video.
+        <a href="../demo.mp4">Download demo.mp4</a>
+      </video>
+    </div>
+  </section>
+
+  <!-- Screenshots -->
+  <section>
+    <h2>Result Screenshots</h2>
+    <div class="screens">
+      <img src="../screens/test5/2026-05-03 22.37.44.jpg" alt="search result 1" />
+      <img src="../screens/test5/2026-05-03 22.37.47.jpg" alt="search result 2" />
+      <img src="../screens/test5/2026-05-03 22.37.49.jpg" alt="search result 3" />
+      <img src="../screens/test5/2026-05-03 22.37.51.jpg" alt="search result 4" />
+      <img src="../screens/test5/2026-05-03 22.37.54.jpg" alt="search result 5" />
+      <img src="../screens/test5/2026-05-03 22.37.56.jpg" alt="search result 6" />
+      <img src="../screens/test5/2026-05-03 22.37.58.jpg" alt="search result 7" />
+    </div>
+  </section>
+
+  <!-- Pipeline -->
+  <section>
+    <h2>Pipeline</h2>
+    <div class="pipeline">
+
+      <div class="step">
+        <div class="step-num">0</div>
+        <div class="step-body">
+          <strong>User takes a photo</strong>
+          <span>In-app camera or gallery — any product on any background.</span>
+        </div>
+      </div>
+      <div class="arrow">↓</div>
+
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <strong>U2Net-P Segmentation</strong>
+          <span>Encoder–decoder saliency model produces a foreground mask.
+          Threshold → RGBA crop with transparent background.
+          Chosen over SAM 2 for its 4 MB footprint and parameter-free inference.</span>
+        </div>
+      </div>
+      <div class="arrow">↓</div>
+
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <strong>Zero-Shot Category Router</strong>
+          <span>SigLIP 2 text-tower embeds 4 prompts per category.
+          Cosine similarity between the crop embedding and each text prototype selects
+          top-1 / top-2 categories — no fine-tuning needed.</span>
+        </div>
+      </div>
+      <div class="arrow">↓</div>
+
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <strong>Semantic Embedding</strong>
+          <span>FashionSigLIP (fashion categories) or SigLIP 2 (other).
+          Input: 224×224 RGB tensor.  Output: 768-dim L2-normalised vector.</span>
+        </div>
+      </div>
+      <div class="arrow">↓</div>
+
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <strong>Cosine Retrieval — top 50</strong>
+          <span>Dot-product against pre-computed catalog embeddings filtered by category.
+          Catalog loaded once into memory at app start.</span>
+        </div>
+      </div>
+      <div class="arrow">↓</div>
+
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-body">
+          <strong>Texture + Colour Rerank — top 10</strong>
+          <span>DINOv2-S patch features for texture similarity.
+          26-bin HSV colour signature per item.
+          Triple rerank (semantic + texture + colour) + hard colour gate → final top 10.</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Models -->
+  <section>
+    <h2>Models</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Model</th>
+          <th>Role</th>
+          <th>Format</th>
+          <th>Size</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><a href="https://github.com/xuebinqin/U-2-Net">U2Net-P</a></td>
+          <td>Background / model removal</td>
+          <td>ONNX int8</td>
+          <td>4 MB</td>
+        </tr>
+        <tr>
+          <td><a href="https://huggingface.co/patrickjohncyh/fashion-clip">FashionSigLIP</a></td>
+          <td>Fashion semantic embeddings</td>
+          <td>ONNX int8</td>
+          <td>91 MB</td>
+        </tr>
+        <tr>
+          <td><a href="https://huggingface.co/google/siglip2-base-patch16-224">SigLIP 2</a></td>
+          <td>General embeddings + category router</td>
+          <td>ONNX int8</td>
+          <td>96 MB</td>
+        </tr>
+        <tr>
+          <td><a href="https://github.com/facebookresearch/dinov2">DINOv2-S</a></td>
+          <td>Texture / patch features</td>
+          <td>ONNX int8</td>
+          <td>23 MB</td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Results -->
+  <section>
+    <h2>Key Results</h2>
+    <div class="results-grid">
+      <div class="result-card">
+        <div class="val">0.93</div>
+        <div class="label">Mean Recall@10<br>(4-category benchmark)</div>
+      </div>
+      <div class="result-card">
+        <div class="val">~130ms</div>
+        <div class="label">Embedding inference<br>(Pixel 10, warm)</div>
+      </div>
+      <div class="result-card">
+        <div class="val">&lt; 4s</div>
+        <div class="label">End-to-end latency<br>(incl. U2Net-P)</div>
+      </div>
+      <div class="result-card">
+        <div class="val">6</div>
+        <div class="label">Product categories<br>in the demo catalog</div>
+      </div>
+      <div class="result-card">
+        <div class="val">~700</div>
+        <div class="label">Catalog items<br>(on-device demo)</div>
+      </div>
+      <div class="result-card">
+        <div class="val">214MB</div>
+        <div class="label">Total model bundle<br>(all 4 models int8)</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Scaling -->
+  <section>
+    <h2>Scaling to Production</h2>
+    <p style="color:var(--muted); margin-bottom: 16px;">
+      This demo runs fully on-device with ~700 items.
+      For a real marketplace (millions of products, dozens of categories):
+    </p>
+    <ul style="list-style: none; display: flex; flex-direction: column; gap: 10px;">
+      <li>🖥️ &nbsp;Replace on-device runtime with a <strong>backend service</strong> (FastAPI / Triton Inference Server)</li>
+      <li>🗄️ &nbsp;Use a <strong>vector database</strong> (Faiss, Qdrant, Weaviate) for sub-millisecond ANN search</li>
+      <li>📐 &nbsp;Add <strong>HNSW / IVF</strong> indexing for large-scale recall</li>
+      <li>🏷️ &nbsp;Expand category taxonomy; fine-tune embeddings per vertical as needed</li>
+      <li>🔄 &nbsp;Incremental index updates as new products are listed</li>
+    </ul>
+  </section>
+
+</main>
+
+<!-- ══════════════════════ FOOTER ══════════════════════ -->
+<footer>
+  <p>
+    <a href="https://github.com/ikostiunina/ImageSearch">GitHub</a> &nbsp;·&nbsp;
+    <a href="../poster.pdf">Poster</a> &nbsp;·&nbsp;
+    USI Master's in Artificial Intelligence — Computer Vision 2026
+  </p>
+</footer>
+
+</body>
+</html>
+

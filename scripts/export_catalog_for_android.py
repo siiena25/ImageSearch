@@ -254,7 +254,7 @@ def main():
     total = sum(p.stat().st_size for p in out.rglob("*") if p.is_file())
     print(f"\n✅ Bundle ready: {out}  ({total / 1e6:.1f} MB)")
     print("Copy to Android assets:")
-    print(f"  cp -r {out}/* /Users/i.kostiunina/StudioProjects/ImageSearchApp/app/src/main/assets/catalog/")
+    print(f"  cp -r {out}/* /ImageSearchApp/app/src/main/assets/catalog/")
 
 
 if __name__ == "__main__":

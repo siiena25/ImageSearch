@@ -57,7 +57,7 @@ def main():
         validate(MODELS_DIR / fp32_name, int8_path, size, fp32_name.replace("_fp32.onnx", ""))
     print("\nDone. Copy the updated int8 models into Android assets:")
     print("  cp models/{fashion_siglip_int8,siglip2_int8,dinov2s_int8}.onnx \\")
-    print("     /Users/i.kostiunina/StudioProjects/ImageSearchApp/app/src/main/assets/models/")
+    print("     /ImageSearchApp/app/src/main/assets/models/")
 
 
 if __name__ == "__main__":
